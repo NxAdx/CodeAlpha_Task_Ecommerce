@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block head_title %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+  {% block extra_head %}
+  {% endblock %}
+</head>
+
+<body>
+  {% block body %}
+
+  {% if messages %}
+  <div>
+    <strong>{% trans "Messages:" %}</strong>
+    <ul>
+      {% for message in messages %}
+      <li>{{message}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div>
+    <strong>{% trans "Menu:" %}</strong>
+    <ul>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'account_email' %}">{% trans "Change E-mail" %}</a></li>
+      <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
+      {% else %}
+      <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
+      <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  {% block content %}
+  {% endblock %}
+  {% endblock %}
+  {% block extra_body %}
+  {% endblock %}
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

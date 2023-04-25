@@ -1,0 +1,43 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
+    <!-- Container wrapper -->
+    <div class="container">
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+            data-mdb-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-sm-0" href="/">
+                <img src="/static/img/eshop.png" height="28" alt="E-SHOP Logo" loading="lazy">
+            </a>
+            <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
+
+        <!-- Right elements -->
+
+        <div class="d-flex align-items-center">
+
+            <div class="d-flex align-items-center">
+                <!-- Icon -->
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'account_email' %}"></a></li>
+                    <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
+                    {% else %}
+                    <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
+                    <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Right elements -->
+
+        </div>
+        <!-- Container wrapper -->
+    </div>
+</nav>
