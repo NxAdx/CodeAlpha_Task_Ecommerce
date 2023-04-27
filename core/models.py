@@ -57,6 +57,20 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
 
+    def total_price(self):
+        return self.quantity * self.item.price
+
+    def total_dis_price(self):
+        return self.quantity * self.item.discount_price
+
+    def save_amount(self):
+        return self.total_price() - self.total_dis_price()
+
+    def final_amount(self):
+        if self.item.discount_price:
+            return self.total_dis_price()
+        return self.total_price()
+
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -68,3 +82,9 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.final_amount()
+        return total

@@ -1,247 +1,120 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>E-SHOP: Products</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
-    <!-- Google Fonts Roboto -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
-    <!-- MDB -->
-    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="{% static 'css/p_style.css' %}" />
-</head>
-
-<body>
-
-    <div class="mt-5 pt-4">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
-            data-tor="show:scale.from(0)">
-
-            <strong> {{ message }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-
-
-    <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
-        <!-- Container wrapper -->
-        <div class="container">
-            <!-- Toggle button -->
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <!-- Collapsible wrapper -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent1">
-                <!-- Navbar brand -->
-                <a class="navbar-brand mt-2 mt-sm-0" href="/">
-                    <img src="{% static 'img/eshop.png' %}" height="28" alt="E-SHOP Logo" loading="lazy">
-                </a>
-                <!-- Left links -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Checkout</a>
-                    </li>
-                </ul>
-                <!-- Left links -->
+{% block content %}
+<!--Main layout-->
+<main class="mt-1 pt-1">
+    <div class="container mt-1">
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid"
+                    alt="" />
             </div>
-            <!-- Collapsible wrapper -->
+            <!--Grid column-->
 
-            <!-- Right elements -->
-            <div class="d-flex align-items-center">
-                <!-- Icon -->
-                <a class="nav-link me-3" href="#">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="badge rounded-pill badge-notification bg-danger">1</span>
-                </a>
-
-
-            </div>
-            <!-- Right elements -->
-        </div>
-        <!-- Container wrapper -->
-    </nav>
-    <!-- Navbar -->
-
-    <!--Main layout-->
-    <main class="mt-5 pt-4">
-        <div class="container mt-5">
-            <!--Grid row-->
-            <div class="row">
-                <!--Grid column-->
-                <div class="col-md-6 mb-4">
-                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg"
-                        class="img-fluid" alt="" />
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-md-6 mb-4">
-                    <!--Content-->
-                    <div class="p-4">
-                        <div class="mb-3">
-                            <a href="">
-                                <span class="badge bg-dark me-1">{{ object.get_category_display }}</span>
-                            </a>
-
-                        </div>
-                        {% if object.discount_price %}
-                        <p class="lead">
-                            <span class="me-1">
-
-                                <del>₹{{ object.price }}</del>
-                            </span>
-                            <span>₹{{ object.discount_price }}</span>
-                        </p>
-                        {% else %}
-                        <p class="lead">
-
-                            <span>₹{{ object.price }}</span>
-                        </p>
-                        {% endif %}
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+                <!--Content-->
+                <div class="p-4">
+                    <div class="mb-3">
                         <strong>
-                            <p style="font-size: 20px;">Description</p>
+                            <p style="font-size: 25px;">{{ item.title }}</p>
                         </strong>
 
-                        <p>{{ object.description }}</p>
-
-                        <!-- <form class="d-flex justify-content-left"> -->
-                        <!-- Default input -->
-                        <!-- <div class="form-outline me-1" style="width: 100px;"> -->
-                        <!-- <input type="number" value="1" class="form-control" /> -->
-                        <!-- </div> -->
-                        <!-- <button class="btn btn-primary ms-1" type="submit"> -->
-                        <!-- Add to cart -->
-                        <!-- <i class="fas fa-shopping-cart ms-1"></i> -->
-                        <!-- </button> -->
-                        <!-- </form> -->
-                        <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary ms-1">
-                            Add to cart
-                            <i class="fas fa-shopping-cart ms-1"></i>
+                        <a href="">
+                            <span class="badge bg-dark me-1">{{ object.get_category_display }}</span>
                         </a>
-                        <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger ms-1">
-                            Remove from cart
 
-                        </a>
                     </div>
-                    <!--Content-->
+                    {% if object.discount_price %}
+                    <p class="lead">
+                        <span class="me-1">
+
+                            <del>₹{{ object.price }}</del>
+                        </span>
+                        <span>₹{{ object.discount_price }}</span>
+                    </p>
+                    {% else %}
+                    <p class="lead">
+
+                        <span>₹{{ object.price }}</span>
+                    </p>
+                    {% endif %}
+                    <strong>
+                        <p style="font-size: 20px;">Description</p>
+                    </strong>
+
+                    <p>{{ object.description }}</p>
+
+                    <!-- <form class="d-flex justify-content-left"> -->
+                    <!-- Default input -->
+                    <!-- <div class="form-outline me-1" style="width: 100px;"> -->
+                    <!-- <input type="number" value="1" class="form-control" /> -->
+                    <!-- </div> -->
+                    <!-- <button class="btn btn-primary ms-1" type="submit"> -->
+                    <!-- Add to cart -->
+                    <!-- <i class="fas fa-shopping-cart ms-1"></i> -->
+                    <!-- </button> -->
+                    <!-- </form> -->
+                    <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary ms-1">
+                        Add to cart
+                        <i class="fas fa-shopping-cart ms-1"></i>
+                    </a>
+                    <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger ms-1">
+                        Remove from cart
+
+                    </a>
                 </div>
-                <!--Grid column-->
+                <!--Content-->
             </div>
-            <!--Grid row-->
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
 
-            <hr />
+        <hr />
 
-            <!--Grid row-->
-            <div class="row d-flex justify-content-center">
-                <!--Grid column-->
-                <div class="col-md-6 text-center">
-                    <h4 class="my-4 h4">Additional information</h4>
+        <!--Grid row-->
+        <div class="row d-flex justify-content-center">
+            <!--Grid column-->
+            <div class="col-md-6 text-center">
+                <h4 class="my-4 h4">Additional information</h4>
 
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta
-                        odit voluptates, quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum
-                        in laborum.</p>
-                </div>
-                <!--Grid column-->
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta
+                    odit voluptates, quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum
+                    in laborum.</p>
             </div>
-            <!--Grid row-->
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
 
-            <!--Grid row-->
-            <div class="row">
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-12 mb-4">
-                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg"
-                        class="img-fluid" alt="" />
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg"
-                        class="img-fluid" alt="" />
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg"
-                        class="img-fluid" alt="" />
-                </div>
-                <!--Grid column-->
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid"
+                    alt="" />
             </div>
-            <!--Grid row-->
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid"
+                    alt="" />
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid"
+                    alt="" />
+            </div>
+            <!--Grid column-->
         </div>
-    </main>
-    <!--Main layout-->
+        <!--Grid row-->
+    </div>
+</main>
+{% endblock content %}
+<!--Main layout-->
 
-    <!-- footer -->
-    <footer class="text-center text-white mt-4" style="background-color: #607d8b;">
-        <!--Call to action-->
-        <!-- <div class="pt-4 pb-2">
-
-        </div> -->
-        <!--/.Call to action-->
-
-        <hr class="text-dark" />
-
-        <div class="container">
-            <!-- Section: Social media -->
-            <section class="mb-3">
-                <!-- Facebook -->
-                <a class="btn-link btn-floating btn-lg text-white" href="#!" role="button"
-                    data-mdb-ripple-color="dark"><i class="fab fa-facebook-f"></i></a>
-
-                <!-- Twitter -->
-                <a class="btn-link btn-floating btn-lg text-white" href="#!" role="button"
-                    data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
-
-                <!-- Google -->
-                <a class="btn-link btn-floating btn-lg text-white" href="#!" role="button"
-                    data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
-
-                <!-- Instagram -->
-                <a class="btn-link btn-floating btn-lg text-white" href="#!" role="button"
-                    data-mdb-ripple-color="dark"><i class="fab fa-instagram"></i></a>
-
-                <!-- YouTube -->
-                <a class="btn-link btn-floating btn-lg text-white" href="#!" role="button"
-                    data-mdb-ripple-color="dark"><i class="fab fa-youtube"></i></a>
-                <!-- Github -->
-                <a class="btn-link btn-floating btn-lg text-white" href="#!" role="button"
-                    data-mdb-ripple-color="dark"><i class="fab fa-github"></i></a>
-            </section>
-            <!-- Section: Social media -->
-        </div>
-        <!-- Grid container -->
-
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); text-color: #e0e0e0;">
-
-            <a class="text-white" href="/">E-SHOP</a>
-        </div>
-        <!-- Copyright -->
-    </footer>
-
-    <!-- MDB -->
-    <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
-    <!-- Custom scripts -->
-    <script type="text/javascript" src="{% static 'js/p_script.js' %}"></script>
-</body>
-
-</html>
+<!-- footer -->

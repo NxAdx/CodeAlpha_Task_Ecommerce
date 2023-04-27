@@ -1,64 +1,73 @@
-{% load cart_template_tags %}
+{% load static %}
+{% load cart_temp %}
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
 
-<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
-    <div class="container">
+  <!-- Container wrapper -->
+  <div class="container">
+    <!-- Toggle button -->
+    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent1"
+      aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
 
-      <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="/">
-        <strong class="blue-text">DJe-commerce</strong>
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-sm-0" href="/">
+        <img src="/static/img/eshop.png" height="28" alt="E-SHOP Logo" loading="lazy">
       </a>
-
-      <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Links -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <!-- Left -->
-        <ul class="navbar-nav mr-auto">
-          {% comment %} <li class="nav-item active">
-            <a class="nav-link waves-effect" href="/">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="/checkout">
-            Checkout</a>
-          </li> {% endcomment %}
-        </ul>
-
-        <!-- Right -->
-        <ul class="navbar-nav nav-flex-icons">
-          {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a href="{% url 'core:order-summary' %}" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"> {{ request.user|cart_item_count }} </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
-              <span class="clearfix d-none d-sm-inline-block"> Logout </span>
-            </a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_login' %}">
-              <span class="clearfix d-none d-sm-inline-block"> Login </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
-              <span class="clearfix d-none d-sm-inline-block"> Signup </span>
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
+      <!-- Left links -->
+      <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link " href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/check/">Checkout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="product.html">Products</a>
+        </li>
+      </ul> -->
+      <!-- Left links -->
     </div>
-  </nav>
+    <!-- Collapsible wrapper -->
+
+    <!-- Right elements -->
+
+    <div class="d-flex align-items-center">
+      {% if request.user.is_authenticated %}
+      <!-- Icon -->
+      <a class="nav-link me-3" href="{% url 'core:order-summary'%}">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="badge rounded-pill badge-notification bg-danger">{{request.user|cart_item_count}}</span>
+      </a>
+    </div>
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a class="nav-link me-3" href="{% url 'account_logout' %}">
+        <span class="btn btn-primary"> Logout </span>
+        <!-- <span class="badge rounded-pill badge-notification bg-danger">Login</span> -->
+      </a>
+    </div>
+    {% else %}
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a class="nav-link me-3" href="{% url 'account_login' %}">
+        <span class="btn btn-primary"> Login </span>
+        <!-- <span class="badge rounded-pill badge-notification bg-danger">Login</span> -->
+      </a>
+    </div>
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a class="nav-link me-3" href="{% url 'account_signup' %}">
+        <span class="btn btn-primary"> Signup </span>
+        <!-- <span class="badge rounded-pill badge-notification bg-danger">Login</span> -->
+      </a>
+    </div>
+    {% endif %}
+    <!-- Right elements -->
+
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
