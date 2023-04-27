@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from .models import Item, Order, OrderItem
-
+from .forms import CheckoutForm
 
 # Create your views here.
 
@@ -48,8 +48,19 @@ class ItemDetailView(DetailView):
     template_name = "product.html"
 
 
-def Checkout(request):
-    return render(request, "checkout.html")
+class CheckoutView(View):
+    def get(self, *args, **kwargs):
+        form = CheckoutForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, "checkout.html", context)
+
+    def post(self, *args, **kwags):
+        form = CheckoutForm(self.request.POST or None)
+        if form.is_valid():
+            print("This form is valid ")
+            return redirect('core:checkout')
 
 
 @login_required
@@ -99,8 +110,9 @@ def remove_from_cart(request, slug):
                 ordered=False
             )[0]
             order.items.remove(order_item)
+            order_item.delete()
             messages.info(request, "This item remove from your cart.")
-            return redirect("core:product", slug=slug)
+            return redirect("core:order-summary")
 
         else:
             messages.info(request, "This item is not in your cart.")
@@ -108,7 +120,6 @@ def remove_from_cart(request, slug):
     else:
         messages.info(request, "You didn't ordered yet.")
         return redirect("core:product", slug=slug)
-    return redirect("core:product", slug=slug)
 
 
 @login_required
@@ -127,8 +138,12 @@ def remove_single_from_cart(request, slug):
                 user=request.user,
                 ordered=False
             )[0]
-            order_item.quantity -= 1
-            order_item.save()
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+            else:
+                order.items.remove(order_item)
+                order_item.save()
             messages.info(request, "This item quantity was updated.")
             return redirect("core:order-summary")
 
@@ -138,4 +153,3 @@ def remove_single_from_cart(request, slug):
     else:
         messages.info(request, "You didn't ordered yet.")
         return redirect("core:product", slug=slug)
-    return redirect("core:product", slug=slug)

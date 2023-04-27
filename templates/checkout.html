@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <!--Main layout-->
-<main class="mt-1 pt-1">
+<main>
     <div class="container">
         <!-- Heading -->
-        <h2 class="my-5 text-center">Checkout form</h2>
+        <h2 class="my-5 text-center">Checkout Form</h2>
 
         <!--Grid row-->
         <div class="row">
@@ -13,53 +14,19 @@
             <div class="col-md-8 mb-4">
                 <!--Card-->
                 <div class="card p-4">
-                    <!--Grid row-->
-                    <div class="row mb-3">
-                        <!--Grid column-->
-                        <div class="col-md-6 mb-2">
-                            <!--firstName-->
-                            <div class="form-outline">
-                                <input type="text" id="typeText" class="form-control" />
-                                <label class="form-label" for="typeText">First name</label>
-                            </div>
-                        </div>
-                        <!--Grid column-->
-
-                        <!--Grid column-->
-                        <div class="col-md-6 mb-2">
-                            <!--lastName-->
-                            <div class="form-outline">
-                                <input type="text" id="typeText" class="form-control" />
-                                <label class="form-label" for="typeText">Last name</label>
-                            </div>
-                        </div>
-                        <!--Grid column-->
-                    </div>
-                    <!--Grid row-->
-
-                    <!--Username-->
-                    <div class="input-group mb-4">
-                        <span class="input-group-text" id="basic-addon1">@</span>
-                        <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                            aria-describedby="basic-addon1" />
-                    </div>
-
-                    <!--email-->
-                    <p class="mb-0">
-                        Email (optional)
-                    </p>
-                    <div class="form-outline mb-4">
-                        <input type="email" class="form-control" placeholder="youremail@example.com"
-                            aria-label="youremail@example.com" aria-describedby="basic-addon1" />
-                    </div>
-
+                    <form>
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <button class="btn btn-primary" type="submit">Checkout</button>
+                    </form>
                     <!--address-->
                     <p class="mb-0">
                         Address
                     </p>
                     <div class="form-outline mb-4">
-                        <input type="email" class="form-control" placeholder="1234 Main St" aria-label="1234 Main St"
-                            aria-describedby="basic-addon1" />
+                        {{form.street_address }}
+                        <!-- <input type="email" class="form-control" placeholder="1234 Main St" aria-label="1234 Main St"
+                            aria-describedby="basic-addon1" /> -->
                     </div>
 
                     <!--address-2-->
@@ -67,8 +34,9 @@
                         Address 2 (optional)
                     </p>
                     <div class="form-outline mb-4">
-                        <input type="email" class="form-control" placeholder="Apartment or suite"
-                            aria-label="Apartment or suite" aria-describedby="basic-addon1" />
+                        {{form.apartments_address}}
+                        <!-- <input type="email" class="form-control" placeholder="Apartment or suite"
+                            aria-label="Apartment or suite" aria-describedby="basic-addon1" /> -->
                     </div>
 
                     <!--Grid row-->
@@ -79,8 +47,9 @@
                                 Country
                             </p>
                             <div class="form-outline mb-4">
-                                <input type="email" class="form-control" placeholder="United States"
-                                    aria-label="United States" aria-describedby="basic-addon1" />
+                                <!-- <input type="email" class="form-control" placeholder="United States"
+                                    aria-label="United States" aria-describedby="basic-addon1" /> -->
+                                {{form.country }}
                             </div>
                         </div>
                         <!--Grid column-->
@@ -103,7 +72,8 @@
                                 Zip
                             </p>
                             <div class="form-outline">
-                                <input type="text" class="form-control" />
+                                {{form.zip}}
+                                <!-- <input type="text" class="form-control" /> -->
                             </div>
                         </div>
                         <!--Grid column-->
@@ -143,46 +113,8 @@
                             <label class="form-check-label" for="flexRadioDefault3"> Paypal </label>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6 mb-3">
-                            <p class="mb-0">
-                                Name on card
-                            </p>
-                            <div class="form-outline">
-                                <input type="text" class="form-control" />
-                                <div class="form-helper">Full name as displayed on card</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <p class="mb-0">
-                                Credit card number
-                            </p>
-                            <div class="form-outline">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <p class="mb-0">
-                                Expiration
-                            </p>
-                            <div class="form-outline">
-                                <input type="text" class="form-control" />
 
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <p class="mb-0">
-                                CVV
-                            </p>
-                            <div class="form-outline">
-                                <input type="text" class="form-control" />
 
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="mb-4" />
                     <button class="btn btn-primary" type="button">Continue to checkout</button>
                 </div>
                 <!--/.Card-->

@@ -4,7 +4,7 @@ from .views import (
     Base,
     HomeView,
     add_to_cart,
-    Checkout,
+    CheckoutView,
     remove_from_cart,
     OrderSummary,
     remove_single_from_cart
@@ -17,7 +17,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
     path('order-summary/', OrderSummary.as_view(), name='order-summary'),
-    path('check/', Checkout, name='checkout'),
+    path('check/', CheckoutView.as_view(), name='checkout'),
     path('base/', Base, name='checkout'),
     path('add-to-cart/<slug>/', add_to_cart, name='add-to-cart'),
     path('remove-from-cart/<slug>/', remove_from_cart, name='remove-from-cart'),
