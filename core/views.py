@@ -58,9 +58,13 @@ class CheckoutView(View):
 
     def post(self, *args, **kwags):
         form = CheckoutForm(self.request.POST or None)
+        print(self.request.POST)
         if form.is_valid():
+            print(form.cleaned_data)
             print("This form is valid ")
             return redirect('core:checkout')
+        messages.warning(self.request, "Failed checkout")
+        return redirect('core:checkout')
 
 
 @login_required

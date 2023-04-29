@@ -88,3 +88,8 @@ class Order(models.Model):
         for order_item in self.items.all():
             total += order_item.final_amount()
         return total
+
+
+class BillingAddress(models.Model):
+    user = models.ForeginKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
