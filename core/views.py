@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-from .models import Item, Order, OrderItem
+from .models import Item, Order, OrderItem, BillingAddress
 from .forms import CheckoutForm
 
 # Create your views here.
@@ -58,13 +58,40 @@ class CheckoutView(View):
 
     def post(self, *args, **kwags):
         form = CheckoutForm(self.request.POST or None)
-        print(self.request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-            print("This form is valid ")
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            if form.is_valid():
+                street_address = form.cleaned_data.get('street_address')
+                apartments_address = form.cleaned_data.get(
+                    'apartments_address')
+                country = form.cleaned_data.get('country')
+                zip_code = form.cleaned_data.get('zip_code')
+                # same_billing_address = form.cleaned_data.get(
+                #     'same_billing_address')
+                # save_info = form.cleaned_data.get('save_info')
+                payment_option = form.cleaned_data.get('payment_option')
+                billing_address = BillingAddress(
+                    user=self.request.user,
+                    street_address=street_address,
+                    apartments_address=apartments_address,
+                    country=country,
+                    zip_code=zip_code
+                )
+                billing_address.save()
+                order.billing_address = billing_address
+                order.save()
+                return redirect('core:checkout')
+            messages.warning(self.request, "Failed checkout")
             return redirect('core:checkout')
-        messages.warning(self.request, "Failed checkout")
-        return redirect('core:checkout')
+        except ObjectDoesNotExist:
+            messages.error(self.request, "You didn't ordered yet!")
+            return redirect("core:order-summary")
+        print(self.request.POST)
+
+
+class PaymentView(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, "payment.html")
 
 
 @login_required
