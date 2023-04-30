@@ -1,4 +1,7 @@
+
+import stripe
 from django.contrib import messages
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
@@ -6,10 +9,14 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-from .models import Item, Order, OrderItem, BillingAddress
-from .forms import CheckoutForm
+from .models import Item, Order, OrderItem, BillingAddress, Payment, Coupon
+from .forms import CheckoutForm, CouponForm
 
 # Create your views here.
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+# `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
 
 
 def home(request):
@@ -50,11 +57,18 @@ class ItemDetailView(DetailView):
 
 class CheckoutView(View):
     def get(self, *args, **kwargs):
-        form = CheckoutForm()
-        context = {
-            'form': form
-        }
-        return render(self.request, "checkout.html", context)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            form = CheckoutForm()
+            context = {
+                'form': form,
+                'couponform': CouponForm(),
+                'order': order
+            }
+            return render(self.request, "checkout.html", context)
+        except ObjectDoesNotExist:
+            messages.info(self.request, "You don't have active order")
+            return redirect("core:checkout")
 
     def post(self, *args, **kwags):
         form = CheckoutForm(self.request.POST or None)
@@ -80,20 +94,84 @@ class CheckoutView(View):
                 billing_address.save()
                 order.billing_address = billing_address
                 order.save()
-                return redirect('core:checkout')
+
+                if payment_option == 'S':
+                    return redirect('core:payment', payment_option='stripe')
+                elif payment_option == 'P':
+                    return redirect('core:payment', payment_option='paypal')
+                else:
+                    messages.warning(
+                        self.request, "Invalid payment option selected")
+                    return redirect('core:checkout')
             messages.warning(self.request, "Failed checkout")
             return redirect('core:checkout')
         except ObjectDoesNotExist:
             messages.error(self.request, "You didn't ordered yet!")
             return redirect("core:order-summary")
-        print(self.request.POST)
 
 
 class PaymentView(View):
     def get(self, *args, **kwargs):
-        return render(self.request, "payment.html")
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            'order': order
+        }
+        return render(self.request, "payment.html", context)
+
+    def post(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        token = self.request.POST.get('stripeToken')
+        amount = int(order.get_total() * 100)
+
+        try:
+            charge = stripe.Charge.create(
+                amount=amount,
+                currency="inr",
+                source=token
+            )
+            payment = Payment()
+            payment.stripe_charge_id = charge['id']
+            payment.user = self.request.user
+            payment.amount = order.get_total()
+            payment.save()
+
+            # payment
+            order_items = order.items.all()
+            order_items.update(ordered=True)
+            for item in order_items:
+                item.save()
+
+            order.ordered = True
+            order.payment = payment
+            # order.ref_code = create_ref_code()
+            order.save()
+
+            messages.success(self.request, "Your order was successful!")
+            return redirect("/")
+
+            # stripe.PaymentIntent.create(**kwargs)
+        except stripe.error.CardError as e:
+            body = e.json_body
+            err = body.get('error', {})
+            messages.warning(self.request, f"{err.get('message')}")
+            return redirect("/")
+            # logging.error(
+            #     "A payment error occurred: {}".format(e.user_message))
+        except stripe.error.InvalidRequestError:
+            messages.error(self.request, "Invalid Parameters")
+            return redirect("/")
+
+            # logging.error("An invalid request occurred.")
+        except Exception:
+            messages.error(self.request, "Unknown")
+            return redirect("/")
+            # logging.error(
+            #     "Another problem occurred, maybe unrelated to Stripe.")
+        else:
+            logging.info("No error.")
 
 
+# add to cart
 @login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
@@ -184,3 +262,30 @@ def remove_single_from_cart(request, slug):
     else:
         messages.info(request, "You didn't ordered yet.")
         return redirect("core:product", slug=slug)
+
+
+def get_coupon(request, code):
+    try:
+        coupon = Coupon.objects.get(code=code)
+        return coupon
+
+    except ObjectDoesNotExist:
+        messages.info(request, "This coupon does not exist")
+        return redirect("core:checkout")
+
+
+def add_coupon(request):
+    if request.method == "POST":
+        form = CouponForm(request.POST or None)
+        if form.is_valid():
+            try:
+                code = form.cleaned_data.get('code')
+                order = Order.objects.get(user=request.user, ordered=False)
+                order.coupon = get_coupon(request, code)
+                order.save()
+                messages.success(request, "Coupon Added ")
+                return redirect("core:checkout")
+            except ObjectDoesNotExist:
+                messages.info(request, "You don't have active order")
+                return redirect("core:checkout")
+    return None

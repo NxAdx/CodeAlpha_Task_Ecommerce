@@ -97,7 +97,7 @@
 </style>
 {% endblock extra_head %}
 
-
+{% block content %}
 
 <main>
     <div class="container wow fadeIn">
@@ -170,14 +170,14 @@
                 </div>
             </div>
 
-
+            {% include "order_snippet.html" %}
 
         </div>
 
     </div>
 </main>
 
-
+{% endblock content %}
 
 {% block extra_scripts %}
 
