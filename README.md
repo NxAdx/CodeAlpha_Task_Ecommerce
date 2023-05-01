@@ -16,3 +16,5 @@ This is an e-commerce website built using the Django web framework, Bootstrap, a
 <li>Django Allauth </li>
 <li>Bootstrap </li>
 </ul>
+<h2>Video Preview</h2>
+https://youtu.be/8S47kcQYEJk
