@@ -16,6 +16,4 @@ This is an e-commerce website built using the Django web framework, Bootstrap, a
 <li>Django Allauth </li>
 <li>Bootstrap </li>
 </ul>
-<iframe  frameborder="0" 
-        style=" width: 100%; height: 110%;" src="https://youtu.be/8S47kcQYEJk">
-      </iframe>
+[<img src="https://img.youtube.com/vi/8S47kcQYEJk/maxresdefault.jpg" width="50%">](https://youtu.be/8S47kcQYEJk "E-Shop")
