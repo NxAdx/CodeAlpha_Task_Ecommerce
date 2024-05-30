@@ -1,4 +1,4 @@
-<h1>E-Commerce Website</h1><br/>
+<h1>Ecom an E-Commerce Website</h1><br/>
 This is an e-commerce website built using the Django web framework, Bootstrap, and Django Allauth for user authentication. The website allows users to browse and purchase products, manage their orders and view their order history. Admin users have access to an admin panel where they can manage products, orders, and users.
 
 <h2>Features</h2>
