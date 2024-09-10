@@ -10,6 +10,5 @@
             "src": "/(.*)",
             "dest": "ecom/wsgi.py"
         }
-    ],
-  "installCommand": "pip install Django==4.2 gunicorn whitenoise psycopg2-binary dj-database-url django-allauth django-crispy-forms Pillow requests stripe"
+    ]
 }
