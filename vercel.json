@@ -3,16 +3,13 @@
         {
             "src": "ecom/wsgi.py",
             "use": "@vercel/python",
-            "config": {
-                "maxLambdasize": "15mb",
-                "runtime": "python3.10"
-            }
-        }
-    ],
+            "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+  }],
     "routes": [
         {
             "src": "/(.*)",
             "dest": "ecom/wsgi.py"
         }
-    ]
+    ],
+  "installCommand": "pip install Django==4.2 gunicorn whitenoise psycopg2-binary dj-database-url django-allauth django-crispy-forms Pillow requests stripe"
 }
