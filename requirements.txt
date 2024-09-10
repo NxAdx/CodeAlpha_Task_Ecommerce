@@ -1,5 +1,4 @@
-pycodestyle==2.6.0
-autopep8==2.0.2
+autopep8==2.2.0
 certifi==2023.7.22
 chardet==5.1.0
 defusedxml==0.7.1
@@ -12,7 +11,7 @@ idna==3.4
 oauthlib==3.2.2
 pep8==1.7.1  # pep8 is deprecated; consider using pycodestyle instead
 Pillow==10.0.1
-#pycodestyle==2.11.0
+pycodestyle==2.11.0
 python-decouple==3.8
 python3-openid==3.2.0
 pytz==2023.3
